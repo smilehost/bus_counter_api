@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import prisma from '../prisma/client.js';
+import { PrismaClient } from '@prisma/client/extension';
 
 // The storage to hold the specific transaction client for a request chain
 const txStorage = new AsyncLocalStorage();
