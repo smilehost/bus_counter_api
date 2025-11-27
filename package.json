@@ -4,8 +4,12 @@
   "main": "cmd/main.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon cmd/main.js"
+    "dev": "npx nodemon cmd/main.js",
+    "prisma": "prisma --config cmd/config.js",
+    "db:push": "prisma db push --config cmd/config.js",
+    "db:generate": "prisma generate --config cmd/config.js",
+    "db:migrate": "prisma migrate dev --config cmd/config.js",
+    "db:migrate:deploy": "prisma migrate deploy --config cmd/config.js"
   },
   "keywords": [],
   "author": "",
