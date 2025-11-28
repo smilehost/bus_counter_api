@@ -26,7 +26,7 @@ model bus {
 
 model company {
   com_id          Int       @id @default(autoincrement())
-  bus_external_id Int       @unique
+  com_external_id Int       @unique
   com_prefix      String?
   com_status      Int?
   created_at      DateTime  @default(now())
@@ -35,13 +35,13 @@ model company {
 }
 
 model busround {
-  busround_id     Int       @id @default(autoincrement())
-  bus_external_id Int       @unique
-  busround_com_id Int
-  busround_bus_id Int
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  deleted_at      DateTime?
+  busround_id          Int       @id @default(autoincrement())
+  busround_external_id Int       @unique
+  busround_com_id      Int
+  busround_bus_id      Int
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @updatedAt
+  deleted_at           DateTime?
 }
 
 model door_bus {
