@@ -1,4 +1,4 @@
-import { getDBFromContext } from '../../util/uow.js';
+import { getDBFromContext, uow } from '../../util/uow.js';
 
 /**
  * Authentication repository with transaction support using UnitOfWork pattern
