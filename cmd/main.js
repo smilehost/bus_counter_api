@@ -6,18 +6,29 @@ import setupRoutes from "./route.js";
 
 dotenv.config();
 
-const app = express();
-app.use(express.json());
+async function start() {
+  try {
+    const app = express();
+    app.use(express.json());
 
-const container = await initContainer();
-app.use(scopePerRequest(container));
-app.use("/api/v1", setupRoutes());
+    const container = await initContainer();
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello API" });
-});
+    app.use(scopePerRequest(container));
+    app.use("/api/v1", setupRoutes());
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server running on port ${process.env.PORT || 3000}`);
-  console.log("Loaded modules:", Object.keys(container.registrations));
-});
+    app.get("/", (req, res) => {
+      res.json({ message: "Hello API" });
+    });
+
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+      console.log("Server running on port", PORT);
+      console.log("Loaded modules:", Object.keys(container.registrations));
+    });
+  } catch (err) {
+    console.error("Fatal startup error:", err);
+  }
+}
+
+start();
