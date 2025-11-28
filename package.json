@@ -5,22 +5,26 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon cmd/main.js",
-    "prisma": "prisma --config cmd/config.js",
-    "db:push": "prisma db push --config cmd/config.js",
-    "db:generate": "prisma generate --config cmd/config.js",
-    "db:migrate": "prisma migrate dev --config cmd/config.js",
-    "db:migrate:deploy": "prisma migrate deploy --config cmd/config.js"
+    "debug": "node --inspect-brk cmd/main.js",
+    "debug:nodemon": "npx nodemon --inspect-brk cmd/main.js",
+    "db:push": "npx prisma db push",
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev",
+    "db:migrate:deploy": "npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^7.0.1",
+    "@prisma/client": "^6.19.0",
+    "awilix": "^12.0.5",
+    "awilix-express": "^9.0.2",
+    "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "express": "^5.1.0"
   },
   "devDependencies": {
-    "prisma": "^7.0.1"
+    "prisma": "^6.19.0"
   }
 }
