@@ -1,13 +1,20 @@
+import { AppError } from "../../util/error.js";
+
 export default class BusHandler {
   constructor({ busService }) {
     this.busService = busService;
   }
 
-  // ใช้ Arrow Function (= async (req, res) => {})
-  // เพื่อให้เข้าถึง 'this.busService'
-  getBus = async (req, res) => {
-    const { id } = req.params;
-    const result = await this.busService.getBusInfo(parseInt(id));
-    res.json(result);
+
+  async getBus(req, res) {
+    try{
+      const { id } = req.params;
+      const result = await this.busService.getBusInfo(parseInt(id));
+      res.json(result);
+
+    } catch (err){
+      AppError.handleError(res, err);
+    }
+
   };
 }
