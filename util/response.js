@@ -13,6 +13,7 @@ export default class ResponseFormatter {
         total,
         limit,
         page,
+        totalpages: Math.ceil(total / limit),
       },
     };
   }
