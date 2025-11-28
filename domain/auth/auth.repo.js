@@ -1,17 +1,10 @@
-import { getDBFromContext } from '../../util/uow.js';
+import db from "../../prisma/client.js";
 
-/**
- * Authentication repository with transaction support using UnitOfWork pattern
- */
-export class AuthRepo {
-    constructor() {}
+export default class AuthRepo {
+  constructor() {}
 
-    async getListCompany() {
-        const db = getDBFromContext();
-        return db.company.findMany({
-            where: {
-                deleted_at: null,
-            },
-        });
-    }
+  //   ตัวอย่างฟังก์ชันในการดึงข้อมูลผู้ใช้จากฐานข้อมูล
+  findUser(id) {
+    return { id, username: "User" + id };
+  }
 }
