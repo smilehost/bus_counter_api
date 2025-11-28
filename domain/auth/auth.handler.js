@@ -1,14 +1,11 @@
+export default class AuthService {
+  constructor({ authService }) {
+    this.authService = authService;
+  }
 
-
-export class AuthHandler {
-    
-    constructor(authService) {
-        this.authService = authService;
-    }
-
-    async getListCompanies(req, res) {
-        const companies = await this.authService.getListCompanies();
-        res.json(companies);
-    }
-
+  handleGetUser(req, res) {
+    const { id } = req.params;
+    const result = this.authService.getUserInfo(id);
+    res.json(result);
+  }
 }
