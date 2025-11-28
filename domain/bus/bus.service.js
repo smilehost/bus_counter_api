@@ -3,8 +3,8 @@ export default class BusService {
     this.busRepo = busRepo;
   }
 
-  getBusInfo(id) {
+  async getBusInfo(id) {
     // Bussiness logic can be added here
-    return this.busRepo.findBus(id);
+    return await this.busRepo.findBus(id);
   }
 }

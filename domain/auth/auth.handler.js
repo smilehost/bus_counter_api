@@ -3,9 +3,10 @@ export default class AuthService {
     this.authService = authService;
   }
 
-  handleGetUser(req, res) {
+  async handleGetUser(req, res) {
     const { id } = req.params;
-    const result = this.authService.getUserInfo(id);
+    
+    const result = await this.authService.getUserInfo(id);
     res.json(result);
   }
 }

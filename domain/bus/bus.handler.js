@@ -7,7 +7,7 @@ export default class BusHandler {
   // เพื่อให้เข้าถึง 'this.busService'
   getBus = async (req, res) => {
     const { id } = req.params;
-    const result = this.busService.getBusInfo(id);
+    const result = await this.busService.getBusInfo(parseInt(id));
     res.json(result);
   };
 }

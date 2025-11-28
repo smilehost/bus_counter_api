@@ -1,9 +1,14 @@
-import db from "../../prisma/client.js";
+import { getDBFromContext } from "../../util/uow.js";
 
 export default class BusRepo {
   constructor() {}
 
-  findBus(id) {
-    return { id, name: "Bus " + id, capacity: 50 };
+  async findBus(id) {
+      const db = getDBFromContext()
+      return await db.bus.findUnique({
+        where: {
+          bus_id: parseInt(id),
+        },
+      })
   }
 }
