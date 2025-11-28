@@ -10,6 +10,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 // Models are defined here: https://pris.ly/d/data-modeling
