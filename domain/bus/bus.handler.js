@@ -1,3 +1,5 @@
+import Response from "../../util/response.js";
+
 export default class BusHandler {
   constructor({ busService }) {
     this.busService = busService;
@@ -8,6 +10,6 @@ export default class BusHandler {
   getBus = async (req, res) => {
     const { id } = req.params;
     const result = await this.busService.getBusInfo(parseInt(id));
-    res.json(result);
+    res.json(Response.success(result));
   };
 }
