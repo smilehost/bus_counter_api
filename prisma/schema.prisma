@@ -38,6 +38,8 @@ model counter {
   counter_bus_id              Int
   counter_installed_camera_id Int
   counter_com_id              Int
+  counter_lat                 String
+  counter_lng                 String
   counter_created_at          DateTime  @default(now())
   updated_at                  DateTime  @updatedAt
   deleted_at                  DateTime?
