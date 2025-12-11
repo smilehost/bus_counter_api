@@ -26,6 +26,8 @@ async function main() {
       counter_bus_id: (i % 20) + 1,
       counter_installed_camera_id: (i % 100) + 1,
       counter_com_id: (i % 10) + 1,
+      counter_lat: (Math.random() * 180 - 90).toFixed(6).toString(),
+      counter_lng: (Math.random() * 360 - 180).toFixed(6).toString(),
     })),
   });
   console.log(`Created ${counters.count} counters`);
