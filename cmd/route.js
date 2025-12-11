@@ -16,10 +16,8 @@ const setupRoutes = () => {
 
   router.get("/bus/:id", busApi("getBus"));
 
-  router.get("/cameras", cameraApi("listCameras"));
   router.get("/cameras/installations", cameraApi("listInstallations"));
-  router.get("/camera/:id", cameraApi("getCamera"));
-  router.get("/camera/:id/installation", cameraApi("installCamera"));
+  router.get("/camera/installation/:id", cameraApi("installCamera"));
 
   return router;
 };
