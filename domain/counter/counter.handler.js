@@ -15,6 +15,7 @@ export default class CounterHandler {
     }
   }
   async getAllCounters(req, res) {
+    const { user } = req;
     try {
       const result = await this.counterService.getAllCounters();
       res.json(ResponseFormatter.success(result));

@@ -2,7 +2,9 @@ import { AppError } from "../../util/error.js";
 import db from "../../prisma/client.js";
 
 export default class CounterRepo {
-  constructor() {}
+  constructor({ currentUser }) {
+    this.currentUser = currentUser;
+  }
   async findCounter(id) {
     try {
       return await db.counter.findUnique({
