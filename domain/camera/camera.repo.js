@@ -19,6 +19,7 @@ export default class CameraRepo {
     });
   }
   async createInstallation(data) {
+    console.log("Creating installation with data:", data);
     return await db.installed_camera.create({
       data: data,
     });
