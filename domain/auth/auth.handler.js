@@ -17,13 +17,19 @@ export default class AuthHandler {
   async Login(req, res) {
     // mock user authentication
     const payload = {
-      user: "artijom",
+      user: "bussing_admin",
       com_id: 1,
       role: "admin",
     };
     try {
       const token = generateToken(payload, "1d");
-      res.json(ResponseFormatter.success({ token }));
+      res.json(
+        ResponseFormatter.success({
+          token,
+          user: payload.user,
+          company: "Bussing",
+        })
+      );
     } catch (err) {
       return AppError.handleError(
         res,
