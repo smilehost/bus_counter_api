@@ -18,4 +18,9 @@ export default class CameraRepo {
       },
     });
   }
+  async createInstallation(data) {
+    return await db.installed_camera.create({
+      data: data,
+    });
+  }
 }

@@ -16,7 +16,7 @@ const setupRoutes = () => {
 
   router.get("/cameras/installations", cameraApi("listInstallations"));
   router.get("/camera/installation/:id", cameraApi("installCamera"));
-  router.get("/counters/:id", counterApi("getCounter"));
+  router.get("/counter/:id", counterApi("getCounter"));
   router.get("/counters", counterApi("getAllCounters"));
 
   return router;
