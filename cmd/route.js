@@ -14,10 +14,10 @@ const setupRoutes = () => {
   const counterApi = makeInvoker(CounterHandler);
   const cameraApi = makeInvoker(CameraHandler);
 
-  router.get("/bus/:id", busApi("getBus"));
-
   router.get("/cameras/installations", cameraApi("listInstallations"));
   router.get("/camera/installation/:id", cameraApi("installCamera"));
+  router.get("/counters/:id", counterApi("getCounter"));
+  router.get("/counters", counterApi("getAllCounters"));
 
   return router;
 };

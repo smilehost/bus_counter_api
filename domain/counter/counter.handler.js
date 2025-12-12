@@ -14,4 +14,12 @@ export default class CounterHandler {
       AppError.handleError(res, err);
     }
   }
+  async getAllCounters(req, res) {
+    try {
+      const result = await this.counterService.getAllCounters();
+      res.json(ResponseFormatter.success(result));
+    } catch (err) {
+      AppError.handleError(res, err);
+    }
+  }
 }
