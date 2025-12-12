@@ -40,7 +40,6 @@ export default class CounterHandler {
     try {
       const { date } = req.query;
       const { QueryStart, QueryEnd } = DateToUTC(date);
-      console.log("Converted date to UTC:", { QueryStart, QueryEnd });
       const result = await this.counterService.getCountersByDate(
         QueryStart,
         QueryEnd
