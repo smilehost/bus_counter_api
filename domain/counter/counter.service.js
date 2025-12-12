@@ -6,4 +6,7 @@ export default class CounterService {
     // Bussiness logic can be added here
     return await this.counterRepo.findCounter(id);
   }
+  async getAllCounters() {
+    return await this.counterRepo.findAllCounters();
+  }
 }
