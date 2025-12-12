@@ -32,7 +32,8 @@ class AuthMiddleware {
   canAccessRole(allowedRoles) {
     return (req, res, next) => {
       const userRole = req.user?.role;
-      if (!allowedRoles.includes(userRole)) {
+      const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+      if (!roles.includes(userRole)) {
         return AppError.handleError(
           res,
           AppError.Forbidden(

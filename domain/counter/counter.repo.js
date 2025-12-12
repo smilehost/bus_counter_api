@@ -19,7 +19,8 @@ export default class CounterRepo {
   async findAllCounters() {
     try {
       // Raw Query
-      return await db.$queryRaw`SELECT * FROM counter where counter_com_id = counter_id AND deleted_at IS NULL`;
+      const com_id = this.currentUser ? this.currentUser.com_id : null;
+      return await db.$queryRaw`SELECT * FROM counter where counter_com_id = ${com_id} AND deleted_at IS NULL`;
     } catch (err) {
       throw AppError.fromPrismaError(err);
     }

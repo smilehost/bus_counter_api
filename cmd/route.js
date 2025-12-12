@@ -33,7 +33,7 @@ const setupRoutes = () => {
   // Admin Routes (Admin Only)
   const adminRouter = express.Router();
   adminRouter.use(authMiddleware.authenticate.bind(authMiddleware));
-  adminRouter.use(authMiddleware.canAccessRole("admin"));
+  adminRouter.use(authMiddleware.canAccessRole(["admin"]));
 
   adminRouter.get("/counters", counterApi("getAllCounters"));
 
