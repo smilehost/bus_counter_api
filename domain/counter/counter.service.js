@@ -9,4 +9,10 @@ export default class CounterService {
   async getAllCounters() {
     return await this.counterRepo.findAllCounters();
   }
+  async getCountersByDateRange(startDate, endDate) {
+    return await this.counterRepo.findByDateRange(startDate, endDate);
+  }
+  async getCountersByDate(startQuery, endQuery) {
+    return await this.counterRepo.findByDate(startQuery, endQuery);
+  }
 }

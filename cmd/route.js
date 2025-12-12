@@ -36,6 +36,11 @@ const setupRoutes = () => {
   adminRouter.use(authMiddleware.canAccessRole(["admin"]));
 
   adminRouter.get("/counters", counterApi("getAllCounters"));
+  adminRouter.get(
+    "/counters/by-date-range",
+    counterApi("getCountersByDateRange")
+  );
+  adminRouter.get("/counters/by-date", counterApi("getCountersByDate"));
 
   router.use(publicRouter);
   router.use(userRouter);

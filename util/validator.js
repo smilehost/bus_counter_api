@@ -11,3 +11,18 @@ export const createInstallationSchema = z.object({
   installed_on_activate: z.boolean().optional().default(true),
   installed_assces_key: z.string().min(1),
 });
+
+export const getCountersByDateRangeSchema = z.object({
+  startDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
+  endDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
+});
+
+export const getCountersByDateSchema = z.object({
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
+});
