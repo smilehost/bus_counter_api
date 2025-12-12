@@ -1,4 +1,10 @@
-import { createContainer, asClass, asValue, Lifetime } from "awilix";
+import {
+  createContainer,
+  asClass,
+  asValue,
+  asFunction,
+  Lifetime,
+} from "awilix";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,16 +16,16 @@ const initContainer = async () => {
   const container = createContainer();
 
   //   ถ้าต้องการใช้ ค่าคงที่ใน container
-  //   container.register({
-  //     config: asValue({ dbName: "my_bus_db" }),
-  //   });
+  container.register({
+    currentUser: asFunction(() => null).scoped(),
+  });
 
   await container.loadModules(["../domain/**/*.js"], {
     cwd: __dirname,
     formatName: "camelCase", // bus.service.js -> busService
     esModules: true,
     resolverOptions: {
-      lifetime: Lifetime.SINGLETON, // สร้างครั้งเดียวใช้ซ้ำ
+      lifetime: Lifetime.SCOPED,
       register: asClass, // โหลดเป็น Class
     },
   });
