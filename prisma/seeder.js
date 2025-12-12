@@ -26,8 +26,9 @@ async function main() {
       counter_bus_id: (i % 20) + 1,
       counter_installed_camera_id: (i % 100) + 1,
       counter_com_id: (i % 10) + 1,
-      counter_lat: (Math.random() * 180 - 90).toFixed(6).toString(),
-      counter_lng: (Math.random() * 360 - 180).toFixed(6).toString(),
+      // Khon Kaen city area: lat 16.40-16.48, lng 102.78-102.88
+      counter_lat: (16.4 + Math.random() * 0.08).toFixed(6).toString(),
+      counter_lng: (102.78 + Math.random() * 0.1).toFixed(6).toString(),
     })),
   });
   console.log(`Created ${counters.count} counters`);
