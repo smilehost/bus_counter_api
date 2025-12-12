@@ -16,6 +16,5 @@ export function QueryRangeToUTC(startDate, endDate) {
 export function DateToUTC(date) {
   const QueryStart = dayjs.tz(date, "Asia/Bangkok").startOf("day").toDate();
   const QueryEnd = dayjs.tz(date, "Asia/Bangkok").endOf("day").toDate();
-  const dateUTC = { QueryStart, QueryEnd };
-  return dateUTC;
+  return { QueryStart, QueryEnd };
 }
