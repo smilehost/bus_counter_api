@@ -25,7 +25,13 @@ export default class CameraHandler {
   }
   async createInstallation(req, res) {
     try {
-      const data = createInstallationSchema.parse(req.body);
+      let payload = req.body;
+      payload = {
+        ...payload,
+        installed_assces_key: "ACCESS_" + Date.now(),
+      };
+      const data = createInstallationSchema.parse(payload);
+      console.log("Validated data:", data);
       const result = await this.cameraService.createInstallation(data);
       res.json(ResponseFormatter.success(result));
     } catch (err) {
