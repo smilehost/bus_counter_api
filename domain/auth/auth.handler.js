@@ -15,26 +15,57 @@ export default class AuthHandler {
   }
 
   async Login(req, res) {
-    // mock user authentication
-    const payload = {
-      user: "bussing_admin",
-      com_id: 1,
-      role: "admin",
-    };
+    const { code, service, session_id } = req.body;
+    console.log("Login request received with:", { code, service, session_id });
     try {
-      const token = generateToken(payload, "1d");
-      res.json(
-        ResponseFormatter.success({
-          token,
-          user: payload.user,
-          company: "Bussing",
-        })
+      const response = await fetch(
+        `http://localhost:3001/api/v1/login/verify`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ code, service, session_id }),
+        }
       );
+
+      const data = await response.json();
+
+      if (data.success) {
+        const {
+          account_id,
+          account_username,
+          com_id,
+          account_role,
+          account_name,
+          session_id: authSessionId,
+        } = data.data;
+
+        // Create access token (expires in 1 day)
+        const access_token = generateToken(
+          { account_id, account_username, com_id, account_role },
+          "1d"
+        );
+
+        // Create refresh token (expires in 7 days)
+        const refresh_token = generateToken(
+          { account_id, session_id: authSessionId },
+          "7d"
+        );
+
+        res.json(
+          ResponseFormatter.success({
+            access_token,
+            refresh_token,
+            account_name,
+            com_id,
+          })
+        );
+      } else {
+        res.status(401).json(ResponseFormatter.error("Authentication failed"));
+      }
     } catch (err) {
-      return AppError.handleError(
-        res,
-        AppError.InternalServerError("Failed to generate token.")
-      );
+      throw AppError.from(err);
     }
   }
 }

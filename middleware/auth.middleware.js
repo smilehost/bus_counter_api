@@ -15,6 +15,7 @@ class AuthMiddleware {
     const token = authHeader.split(" ")[1];
     try {
       const decoded = verifyToken(token);
+      console.log("Authenticated user:", decoded);
       req.user = decoded;
       if (req.container) {
         req.container.register({
@@ -31,7 +32,8 @@ class AuthMiddleware {
   }
   canAccessRole(allowedRoles) {
     return (req, res, next) => {
-      const userRole = req.user?.role;
+      const userRole = req.user?.account_role;
+      console.log("User role:", userRole);
       const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
       if (!roles.includes(userRole)) {
         return AppError.handleError(
