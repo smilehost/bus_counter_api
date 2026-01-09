@@ -1,40 +1,53 @@
 import { AppError } from "../../util/error.js";
+import db from "../../prisma/client.js";
 
 export default class CameraService {
   constructor({ cameraRepo }) {
     this.cameraRepo = cameraRepo;
   }
 
-  async getInstallationById(id) {
-    const installation = await this.cameraRepo.getInstallationById(id);
-
-    // Business validation - ตรวจสอบว่ามีข้อมูลอยู่ไหม
-    if (!installation) {
-      throw new AppError("Installation not found", 404);
+  // ==================== Camera Group ====================
+  async getCameraGroupById(id) {
+    const cameraGroup = await this.cameraRepo.getCameraGroupById(id);
+    if (!cameraGroup) {
+      throw new AppError("Camera group not found", 404);
     }
-
-    return installation;
+    return cameraGroup;
   }
 
-  async getAllInstallationCameras() {
-    // Bussiness logic can be added here
-    return await this.cameraRepo.InstallationCameras();
+  async getAllCameraGroups() {
+    return await this.cameraRepo.getCameraGroups();
   }
 
-  async createInstallation(data) {
-    // // Business validation - ตรวจสอบว่า camera ซ้ำกับ bus/door ไหม
-    // const existing = await this.cameraRepo.findByBusAndDoor(
-    //   data.installed_bus_id,
-    //   data.installed_door_bus_Id
-    // );
+  async getCameraGroupsByDeviceId(deviceId) {
+    const device = await db.installed_device.findUnique({
+      where: { installed_id: parseInt(deviceId), deleted_at: null },
+    });
+    if (!device) {
+      throw new AppError("Installed device not found", 404);
+    }
+    return await this.cameraRepo.getCameraGroupsByDeviceId(deviceId);
+  }
 
-    // if (existing) {
-    //   throw new AppError("Camera already installed on this door", 409);
-    // }
+  async createCameraGroup(data) {
+    // Validate device exists
+    const device = await db.installed_device.findUnique({
+      where: {
+        installed_id: data.camera_group_installed_device_id,
+        deleted_at: null,
+      },
+    });
+    if (!device) {
+      throw new AppError("Installed device not found", 404);
+    }
+    return await this.cameraRepo.createCameraGroup(data);
+  }
 
-    // // Business validation - ตรวจสอบว่า bus มีอยู่จริงไหม
-    // // (ถ้าต้องการ)
-
-    return await this.cameraRepo.createInstallation(data);
+  async updateCameraGroup(id, data) {
+    const cameraGroup = await this.cameraRepo.getCameraGroupById(id);
+    if (!cameraGroup) {
+      throw new AppError("Camera group not found", 404);
+    }
+    return await this.cameraRepo.updateCameraGroup(id, data);
   }
 }
