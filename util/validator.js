@@ -1,20 +1,25 @@
 import { z } from "zod";
 
 // ==================== Installed Device ====================
+const cameraGroupInputSchema = z.object({
+  door_num: z.string().min(1),
+  camera_top_uid: z.string().min(1),
+  camera_face_uid: z.string().min(1),
+});
+
 export const createInstalledDeviceSchema = z.object({
-  installed_device_name: z.string().min(1),
-  installed_device_uid: z.string().min(1),
-  installed_bus_id: z.number().int().positive(),
-  installed_com_id: z.number().int().positive(),
-  installed_access_key: z.string().min(1),
+  device_name: z.string().min(1),
+  device_uid: z.string().min(1),
+  bus_id: z.number().int().positive(),
+  com_id: z.number().int().positive(),
+  cameras_group: z.array(cameraGroupInputSchema).optional(),
 });
 
 export const updateInstalledDeviceSchema = z.object({
-  installed_device_name: z.string().min(1).optional(),
-  installed_device_uid: z.string().min(1).optional(),
-  installed_bus_id: z.number().int().positive().optional(),
-  installed_com_id: z.number().int().positive().optional(),
-  installed_access_key: z.string().min(1).optional(),
+  device_name: z.string().min(1).optional(),
+  device_uid: z.string().min(1).optional(),
+  bus_id: z.number().int().positive().optional(),
+  com_id: z.number().int().positive().optional(),
 });
 
 // ==================== Camera Group ====================

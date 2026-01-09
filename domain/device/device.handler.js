@@ -51,11 +51,7 @@ export default class DeviceHandler {
 
   async createInstalledDevice(req, res) {
     try {
-      let payload = req.body;
-      payload = {
-        ...payload,
-        installed_access_key: "ACCESS_" + Date.now(),
-      };
+      const payload = req.body;
       const data = createInstalledDeviceSchema.parse(payload);
       const result = await this.deviceService.createInstalledDevice(data);
       res.json(ResponseFormatter.success(result));

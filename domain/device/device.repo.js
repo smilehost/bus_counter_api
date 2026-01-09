@@ -65,6 +65,34 @@ export default class DeviceRepo {
   async createInstalledDevice(data) {
     return await db.installed_device.create({
       data: data,
+      include: {
+        cameraGroups: true,
+      },
+    });
+  }
+
+  async createInstalledDeviceWithCameras(deviceData, camerasGroupData) {
+    return await db.$transaction(async (tx) => {
+      // Create device
+      const device = await tx.installed_device.create({
+        data: deviceData,
+      });
+
+      // Create camera groups if provided
+      if (camerasGroupData && camerasGroupData.length > 0) {
+        await tx.camera_group.createMany({
+          data: camerasGroupData.map((camera) => ({
+            ...camera,
+            camera_group_installed_device_id: device.installed_id,
+          })),
+        });
+      }
+
+      // Return device with camera groups
+      return await tx.installed_device.findUnique({
+        where: { installed_id: device.installed_id },
+        include: { cameraGroups: true },
+      });
     });
   }
 
