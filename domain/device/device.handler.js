@@ -3,6 +3,7 @@ import ResponseFormatter from "../../util/response.js";
 import {
   createInstalledDeviceSchema,
   updateInstalledDeviceSchema,
+  piGetConfigSchema,
 } from "../../util/validator.js";
 
 export default class DeviceHandler {
@@ -79,6 +80,23 @@ export default class DeviceHandler {
       res.json(
         ResponseFormatter.success({ message: "Device deleted successfully" })
       );
+    } catch (err) {
+      AppError.handleError(res, err);
+    }
+  }
+
+  async piGetConfig(req, res) {
+    const { device_uid, password } = req.body;
+    try {
+      const data = piGetConfigSchema.parse({ device_uid, password });
+      if (data.password !== process.env.PI_DEVICE_PASSWORD) {
+        throw new AppError("Unauthorized access", 401);
+      }
+
+      const result = await this.deviceService.getInstalledDeviceByUid(
+        data.device_uid
+      );
+      res.json(ResponseFormatter.success(result));
     } catch (err) {
       AppError.handleError(res, err);
     }

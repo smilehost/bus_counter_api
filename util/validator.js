@@ -68,3 +68,8 @@ export const getCountersByDateSchema = z.object({
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
 });
+
+export const piGetConfigSchema = z.object({
+  device_uid: z.string().min(1),
+  password: z.string().min(1),
+});
