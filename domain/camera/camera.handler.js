@@ -1,38 +1,63 @@
 import { AppError } from "../../util/error.js";
 import ResponseFormatter from "../../util/response.js";
-import { createInstallationSchema } from "../../util/validator.js";
+import {
+  createCameraGroupSchema,
+  updateCameraGroupSchema,
+} from "../../util/validator.js";
 
 export default class CameraHandler {
   constructor({ cameraService }) {
     this.cameraService = cameraService;
   }
-  async installCamera(req, res) {
+
+  // ==================== Camera Group ====================
+  async getCameraGroup(req, res) {
     const { id } = req.params;
     try {
-      const result = await this.cameraService.getInstallationById(id);
+      const result = await this.cameraService.getCameraGroupById(id);
       res.json(ResponseFormatter.success(result));
     } catch (err) {
       AppError.handleError(res, err);
     }
   }
-  async listInstallations(req, res) {
+
+  async listCameraGroups(req, res) {
     try {
-      const result = await this.cameraService.getAllInstallationCameras();
+      const result = await this.cameraService.getAllCameraGroups();
       res.json(ResponseFormatter.success(result));
     } catch (err) {
       AppError.handleError(res, err);
     }
   }
-  async createInstallation(req, res) {
+
+  async getCameraGroupsByDevice(req, res) {
+    const { deviceId } = req.params;
     try {
-      let payload = req.body;
-      payload = {
-        ...payload,
-        installed_assces_key: "ACCESS_" + Date.now(),
-      };
-      const data = createInstallationSchema.parse(payload);
-      console.log("Validated data:", data);
-      const result = await this.cameraService.createInstallation(data);
+      const result = await this.cameraService.getCameraGroupsByDeviceId(
+        deviceId
+      );
+      res.json(ResponseFormatter.success(result));
+    } catch (err) {
+      AppError.handleError(res, err);
+    }
+  }
+
+  async createCameraGroup(req, res) {
+    try {
+      const payload = req.body;
+      const data = createCameraGroupSchema.parse(payload);
+      const result = await this.cameraService.createCameraGroup(data);
+      res.json(ResponseFormatter.success(result));
+    } catch (err) {
+      AppError.handleError(res, err);
+    }
+  }
+
+  async updateCameraGroup(req, res) {
+    const { id } = req.params;
+    try {
+      const payload = req.body;
+      const result = await this.cameraService.updateCameraGroup(id, payload);
       res.json(ResponseFormatter.success(result));
     } catch (err) {
       AppError.handleError(res, err);

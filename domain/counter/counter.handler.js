@@ -18,8 +18,10 @@ export default class CounterHandler {
   async getAllCounters(req, res) {
     try {
       const result = await this.counterService.getAllCounters();
+      console.log(result);
       res.json(ResponseFormatter.success(result));
     } catch (err) {
+      console.log(err);
       AppError.handleError(res, err);
     }
   }
