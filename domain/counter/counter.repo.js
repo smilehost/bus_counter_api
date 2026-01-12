@@ -158,10 +158,15 @@ export default class CounterRepo {
 
         // Create face records if provided
         if (faces && faces.length > 0) {
+          const genderMap = { M: "Male", F: "Female", U: "Unknown" };
           const faceData = faces.map((face) => ({
             counter_id: counter.counter_id,
-            gender: face.gender === "M" ? "Male" : "Female",
+            tracking_id: face.tracking_id,
+            gender: genderMap[face.gender] || "Unknown",
             age: face.age,
+            gender_confidence: face.gender_confidence,
+            age_confidence: face.age_confidence,
+            timestamp: new Date(face.timestamp),
           }));
 
           await tx.face.createMany({
