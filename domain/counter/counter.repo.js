@@ -147,4 +147,52 @@ export default class CounterRepo {
       throw AppError.fromPrismaError(err);
     }
   }
+
+  async createCounterWithFaces(counterData, faces) {
+    try {
+      return await db.$transaction(async (tx) => {
+        // Create counter record
+        const counter = await tx.counter.create({
+          data: counterData,
+        });
+
+        // Create face records if provided
+        if (faces && faces.length > 0) {
+          const faceData = faces.map((face) => ({
+            counter_id: counter.counter_id,
+            gender: face.gender === "M" ? "Male" : "Female",
+            age: face.age,
+          }));
+
+          await tx.face.createMany({
+            data: faceData,
+          });
+        }
+
+        // Return counter with faces
+        return await tx.counter.findUnique({
+          where: { counter_id: counter.counter_id },
+          include: {
+            installed_device: true,
+            face: true,
+          },
+        });
+      });
+    } catch (err) {
+      throw AppError.fromPrismaError(err);
+    }
+  }
+
+  async findInstalledDeviceById(installedId) {
+    try {
+      return await db.installed_device.findUnique({
+        where: {
+          installed_id: parseInt(installedId),
+          deleted_at: null,
+        },
+      });
+    } catch (err) {
+      throw AppError.fromPrismaError(err);
+    }
+  }
 }
