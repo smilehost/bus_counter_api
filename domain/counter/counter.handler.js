@@ -1,10 +1,33 @@
 import { AppError } from "../../util/error.js";
 import ResponseFormatter from "../../util/response.js";
 import { QueryRangeToUTC, DateToUTC } from "../../util/day.js";
+import { piCounterDataSchema } from "../../util/validator.js";
 
 export default class CounterHandler {
   constructor({ counterService }) {
     this.counterService = counterService;
+  }
+
+  async receiveFromPi(req, res) {
+    try {
+      const validated = piCounterDataSchema.parse(req.body);
+      const result = await this.counterService.createFromPi(validated);
+      res
+        .status(201)
+        .json(
+          ResponseFormatter.success(
+            result,
+            "Counter data received successfully"
+          )
+        );
+    } catch (err) {
+      if (err.name === "ZodError") {
+        return res
+          .status(400)
+          .json(ResponseFormatter.error("Validation failed", err.errors));
+      }
+      AppError.handleError(res, err);
+    }
   }
   async getCounter(req, res) {
     try {

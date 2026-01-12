@@ -73,3 +73,23 @@ export const piGetConfigSchema = z.object({
   device_uid: z.string().min(1),
   password: z.string().min(1),
 });
+
+// ==================== Pi Counter Data ====================
+const faceInputSchema = z.object({
+  gender: z.enum(["M", "F"]),
+  age: z.number().min(0),
+});
+
+export const piCounterDataSchema = z.object({
+  bus_id: z.number().int().positive(),
+  bus_round_id: z.number().int().positive().optional(),
+  door_num: z.number().int().positive(),
+  installed_camera_id: z.number().int().positive(),
+  door_open_datetime: z.string().datetime(),
+  door_close_datetime: z.string().datetime(),
+  in_count: z.number().int().min(0),
+  out_count: z.number().int().min(0),
+  lat: z.string(),
+  lng: z.string(),
+  faces: z.array(faceInputSchema).optional(),
+});

@@ -21,6 +21,7 @@ const setupRoutes = () => {
   const publicRouter = express.Router();
   publicRouter.post("/auth/login", authApi("Login"));
   publicRouter.post("/pi/config", deviceApi("piGetConfig"));
+  publicRouter.post("/pi/counter", counterApi("receiveFromPi"));
 
   // User Routes (Authenticated)
   const userRouter = express.Router();
