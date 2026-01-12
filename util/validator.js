@@ -76,8 +76,12 @@ export const piGetConfigSchema = z.object({
 
 // ==================== Pi Counter Data ====================
 const faceInputSchema = z.object({
-  gender: z.enum(["M", "F"]),
+  tracking_id: z.number().int(),
+  gender: z.enum(["M", "F", "U"]),
   age: z.number().min(0),
+  gender_confidence: z.number().min(0).max(1),
+  age_confidence: z.number().min(0).max(1),
+  timestamp: z.string().datetime(),
 });
 
 export const piCounterDataSchema = z.object({

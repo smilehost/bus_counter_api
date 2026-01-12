@@ -50,14 +50,18 @@ model counter {
 }
 
 model face {
-  face_id    Int       @id @default(autoincrement())
-  counter_id Int
-  gender     Gender
-  age        Float
-  counter    counter   @relation(fields: [counter_id], references: [counter_id])
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted_at DateTime?
+  face_id           Int       @id @default(autoincrement())
+  tracking_id       Int
+  counter_id        Int
+  gender            Gender
+  age               Float
+  counter           counter   @relation(fields: [counter_id], references: [counter_id])
+  gender_confidence Float
+  age_confidence    Float
+  timestamp         DateTime
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime?
 }
 
 model camera_group {
@@ -77,4 +81,5 @@ model camera_group {
 enum Gender {
   Male
   Female
+  Unknown
 }
