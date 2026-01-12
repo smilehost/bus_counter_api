@@ -1,7 +1,6 @@
 import express from "express";
 import { makeInvoker } from "awilix-express";
 import AuthMiddleware from "../middleware/auth.middleware.js";
-import BusHandler from "../domain/bus/bus.handler.js";
 import AuthHandler from "../domain/auth/auth.handler.js";
 import CounterHandler from "../domain/counter/counter.handler.js";
 import CameraHandler from "../domain/camera/camera.handler.js";
@@ -13,7 +12,6 @@ const setupRoutes = () => {
   const authMiddleware = new AuthMiddleware();
 
   // makeInvoker ต้องรับ class ไม่ใช่ string
-  const busApi = makeInvoker(BusHandler);
   const authApi = makeInvoker(AuthHandler);
   const counterApi = makeInvoker(CounterHandler);
   const cameraApi = makeInvoker(CameraHandler);
