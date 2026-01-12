@@ -71,13 +71,20 @@ async function main() {
   console.log(`Created ${counters.count} counters`);
 
   // Seed faces (200 records - multiple faces per counter)
-  const genders = ["Male", "Female"];
+  const genders = ["Male", "Female", "Unknown"];
   const faces = await prisma.face.createMany({
-    data: Array.from({ length: 200 }, (_, i) => ({
-      counter_id: (i % 100) + 1,
-      gender: genders[Math.floor(Math.random() * 2)],
-      age: Math.floor(Math.random() * 60) + 10, // Age 10-70
-    })),
+    data: Array.from({ length: 200 }, (_, i) => {
+      const faceTimestamp = getRandomDate();
+      return {
+        counter_id: (i % 100) + 1,
+        tracking_id: i + 1,
+        gender: genders[Math.floor(Math.random() * 3)],
+        age: Math.floor(Math.random() * 60) + 10, // Age 10-70
+        gender_confidence: Math.random() * 0.5 + 0.5, // 0.5-1.0
+        age_confidence: Math.random() * 0.5 + 0.5, // 0.5-1.0
+        timestamp: faceTimestamp,
+      };
+    }),
   });
   console.log(`Created ${faces.count} faces`);
 
