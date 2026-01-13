@@ -19,7 +19,7 @@ export default class AuthHandler {
     console.log("Login request received with:", { code, service, session_id });
     try {
       const response = await fetch(
-        `http://localhost:3001/api/v1/login/verify`,
+        `https://authen-center.lab.bussing.app/api/v1/login/verify`,
         {
           method: "POST",
           headers: {
