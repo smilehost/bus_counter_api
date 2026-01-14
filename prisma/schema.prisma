@@ -14,88 +14,72 @@ datasource db {
 }
 
 // Models are defined here: https://pris.ly/d/data-modeling
-model bus {
-  bus_id          Int       @id @default(autoincrement())
-  bus_com_id      Int
-  bus_status      Int
-  bus_external_id Int       @unique
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  deleted_at      DateTime?
-}
 
-model company {
-  com_id          Int       @id @default(autoincrement())
-  com_external_id Int       @unique
-  com_prefix      String?
-  com_status      Int?
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  deleted_at      DateTime?
-}
-
-model busround {
-  busround_id          Int       @id @default(autoincrement())
-  busround_external_id Int       @unique
-  busround_com_id      Int
-  busround_bus_id      Int
-  created_at           DateTime  @default(now())
-  updated_at           DateTime  @updatedAt
-  deleted_at           DateTime?
-}
-
-model door_bus {
-  door_id         Int       @id @default(autoincrement())
-  door_type       door_type
-  door_bus_id     Int
-  door_bus_number String    @db.VarChar(10)
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  deleted_at      DateTime?
-}
-
-model camera_device {
-  camera_id     Int       @id @default(autoincrement())
-  camera_name   String    @db.VarChar(45)
-  camera_status Int
-  com_id        Int
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @updatedAt
-  deleted_at    DateTime?
-}
-
-model installed_camera {
-  install_id            Int       @id @default(autoincrement())
-  installed_camera_id   Int
+model installed_device {
+  installed_id          Int            @id @default(autoincrement())
+  installed_device_name String
+  installed_device_uid  String
   installed_bus_id      Int
-  door_bus_Id           Int
   installed_com_id      Int
-  installed_on_activate Boolean   @default(true)
-  installed_assces_key  String
-  created_at            DateTime  @default(now())
-  updated_at            DateTime  @updatedAt
+  installed_access_key  String
+  counter               counter[]
+  cameraGroups          camera_group[]
+  created_at            DateTime       @default(now())
+  updated_at            DateTime       @updatedAt
   deleted_at            DateTime?
 }
 
 model counter {
-  counter_id                  Int       @id @default(autoincrement())
-  counter_door_open_datetime  DateTime
-  counter_door_close_datetime DateTime
+  counter_id                  Int              @id @default(autoincrement())
   counter_in_count            Int
   counter_out_count           Int
+  counter_door_open_datetime  DateTime?
+  counter_door_close_datetime DateTime?
   counter_bus_id              Int
-  counter_door_id             Int
-  counter_installed_camera_id Int
+  counter_door_number         Int
+  counter_installed_device_id Int
+  installed_device            installed_device @relation(fields: [counter_installed_device_id], references: [installed_id])
   counter_com_id              Int
-  counter_busround_id         Int
-  counter_created_at          DateTime  @default(now())
-  updated_at                  DateTime  @updatedAt
+  counter_lat                 String
+  counter_lng                 String
+  counter_busround_id         Int?
+  face                        face[]
+  created_at                  DateTime         @default(now())
+  updated_at                  DateTime         @updatedAt
   deleted_at                  DateTime?
 }
 
+model face {
+  face_id           Int       @id @default(autoincrement())
+  tracking_id       Int
+  counter_id        Int
+  gender            Gender
+  age               Float
+  counter           counter   @relation(fields: [counter_id], references: [counter_id])
+  gender_confidence Float
+  age_confidence    Float
+  timestamp         DateTime
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  deleted_at        DateTime?
+}
+
+model camera_group {
+  camera_group_id                  Int              @id @default(autoincrement())
+  camera_group_installed_device_id Int
+  installed_device                 installed_device @relation(fields: [camera_group_installed_device_id], references: [installed_id])
+  camera_group_door_number         String           @db.VarChar(10)
+  camera_group_camera_status       Int
+  camera_group_camera_top_uid      String           @db.VarChar(50)
+  camera_group_camera_face_uid     String           @db.VarChar(50)
+  created_at                       DateTime         @default(now())
+  updated_at                       DateTime         @updatedAt
+  deleted_at                       DateTime?
+}
+
 // Enums an be defined here
-enum door_type {
-  IN
-  OUT
-  IN_OUT
+enum Gender {
+  Male
+  Female
+  Unknown
 }

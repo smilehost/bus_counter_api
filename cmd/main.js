@@ -3,13 +3,20 @@ import dotenv from "dotenv";
 import { scopePerRequest } from "awilix-express";
 import initContainer from "./di.js";
 import setupRoutes from "./route.js";
+import logger from "../util/logger.js";
+import cors from "cors";
 
 dotenv.config();
 
 async function start() {
   try {
     const app = express();
+    app.use(cors());
     app.use(express.json());
+
+    const morganFormat =
+      ":remote-addr :method :url :status :res[content-length] - :response-time ms";
+    app.use(logger.httpLogger(morganFormat));
 
     const container = await initContainer();
 

@@ -5,3 +5,5 @@ node_modules
 /generated/prisma
 
 package-lock.json
+
+logs/*
