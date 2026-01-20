@@ -97,3 +97,9 @@ export const piCounterDataSchema = z.object({
   lng: z.string(),
   faces: z.array(faceInputSchema).optional(),
 });
+
+export const verifyTokenSchema = z.object({
+  code: z.string().min(1),
+  service: z.string().min(1),
+  session_id: z.string().min(1),
+});
