@@ -1,11 +1,21 @@
 import db from "../../prisma/client.js";
 
 export default class DeviceRepo {
-  constructor() {}
+  constructor({ currentUser }) {
+    this.currentUser = currentUser;
+  }
+
+  // superadmin (role 1) = query all, companyAdmin (role 2) = own com_id only
+  _comIdFilter() {
+    if (!this.currentUser) return {};
+    if (this.currentUser.account_role === 1) return {};
+    return { installed_com_id: this.currentUser.com_id };
+  }
 
   async getInstalledDevices() {
     return await db.installed_device.findMany({
       where: {
+        ...this._comIdFilter(),
         deleted_at: null,
       },
       include: {
@@ -15,9 +25,10 @@ export default class DeviceRepo {
   }
 
   async getInstalledDeviceById(id) {
-    return await db.installed_device.findUnique({
+    return await db.installed_device.findFirst({
       where: {
         installed_id: parseInt(id),
+        ...this._comIdFilter(),
         deleted_at: null,
       },
       include: {
@@ -42,6 +53,7 @@ export default class DeviceRepo {
     return await db.installed_device.findMany({
       where: {
         installed_bus_id: parseInt(busId),
+        ...this._comIdFilter(),
         deleted_at: null,
       },
       include: {
