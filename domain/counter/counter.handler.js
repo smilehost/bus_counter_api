@@ -17,8 +17,8 @@ export default class CounterHandler {
         .json(
           ResponseFormatter.success(
             result,
-            "Counter data received successfully"
-          )
+            "Counter data received successfully",
+          ),
         );
     } catch (err) {
       if (err.name === "ZodError") {
@@ -41,7 +41,7 @@ export default class CounterHandler {
   async getAllCounters(req, res) {
     try {
       const result = await this.counterService.getAllCounters();
-      console.log(result);
+      // console.log(result);
       res.json(ResponseFormatter.success(result));
     } catch (err) {
       console.log(err);
@@ -54,7 +54,7 @@ export default class CounterHandler {
       const { startDateUTC, endDateUTC } = QueryRangeToUTC(startDate, endDate);
       const result = await this.counterService.getCountersByDateRange(
         startDateUTC,
-        endDateUTC
+        endDateUTC,
       );
       res.json(ResponseFormatter.success(result));
     } catch (err) {
@@ -67,7 +67,7 @@ export default class CounterHandler {
       const { QueryStart, QueryEnd } = DateToUTC(date);
       const result = await this.counterService.getCountersByDate(
         QueryStart,
-        QueryEnd
+        QueryEnd,
       );
       res.json(ResponseFormatter.success(result));
     } catch (err) {

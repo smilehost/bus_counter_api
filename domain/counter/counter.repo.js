@@ -6,6 +6,13 @@ export default class CounterRepo {
     this.currentUser = currentUser;
   }
 
+  // superadmin (role 1) = query all, companyAdmin (role 2) = own com_id only
+  _comIdFilter() {
+    if (!this.currentUser) return {};
+    if (this.currentUser.account_role === 1) return {};
+    return { counter_com_id: this.currentUser.com_id };
+  }
+
   async findCounter(id) {
     try {
       return await db.counter.findUnique({
@@ -25,10 +32,9 @@ export default class CounterRepo {
 
   async findAllCounters() {
     try {
-      const com_id = this.currentUser ? this.currentUser.com_id : null;
       return await db.counter.findMany({
         where: {
-          counter_com_id: com_id,
+          ...this._comIdFilter(),
           deleted_at: null,
         },
         include: {
@@ -46,10 +52,9 @@ export default class CounterRepo {
 
   async findByDateRange(startDate, endDate) {
     try {
-      const com_id = this.currentUser ? this.currentUser.com_id : null;
       return await db.counter.findMany({
         where: {
-          counter_com_id: com_id,
+          ...this._comIdFilter(),
           created_at: {
             gte: startDate,
             lte: endDate,
@@ -71,10 +76,9 @@ export default class CounterRepo {
 
   async findByDate(startQuery, endQuery) {
     try {
-      const com_id = this.currentUser ? this.currentUser.com_id : null;
       return await db.counter.findMany({
         where: {
-          counter_com_id: com_id,
+          ...this._comIdFilter(),
           created_at: {
             gte: startQuery,
             lte: endQuery,
@@ -106,11 +110,10 @@ export default class CounterRepo {
 
   async findByBusId(busId) {
     try {
-      const com_id = this.currentUser ? this.currentUser.com_id : null;
       return await db.counter.findMany({
         where: {
           counter_bus_id: parseInt(busId),
-          counter_com_id: com_id,
+          ...this._comIdFilter(),
           deleted_at: null,
         },
         include: {
@@ -128,11 +131,10 @@ export default class CounterRepo {
 
   async findByBusRoundId(busRoundId) {
     try {
-      const com_id = this.currentUser ? this.currentUser.com_id : null;
       return await db.counter.findMany({
         where: {
           counter_busround_id: parseInt(busRoundId),
-          counter_com_id: com_id,
+          ...this._comIdFilter(),
           deleted_at: null,
         },
         include: {
