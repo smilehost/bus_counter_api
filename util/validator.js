@@ -8,10 +8,10 @@ const cameraGroupInputSchema = z.object({
 });
 
 export const createInstalledDeviceSchema = z.object({
-  device_name: z.string().min(1),
-  device_uid: z.string().min(1),
-  bus_id: z.number().int().positive(),
-  com_id: z.number().int().positive(),
+  installed_device_name: z.string().min(1),
+  installed_device_uid: z.string().min(1),
+  installed_bus_id: z.number().int().positive(),
+  installed_com_id: z.number().int().positive(),
   cameras_group: z.array(cameraGroupInputSchema).optional(),
 });
 

@@ -36,18 +36,17 @@ export default class DeviceService {
   async createInstalledDevice(data) {
     // Check if device UID already exists
     const existing = await this.deviceRepo.getInstalledDeviceByUid(
-      data.device_uid
+      data.installed_device_uid,
     );
     if (existing) {
       throw new AppError("Device with this UID already exists", 409);
     }
 
-    // Transform data to database format
     const deviceData = {
-      installed_device_name: data.device_name,
-      installed_device_uid: data.device_uid,
-      installed_bus_id: data.bus_id,
-      installed_com_id: data.com_id,
+      installed_device_name: data.installed_device_name,
+      installed_device_uid: data.installed_device_uid,
+      installed_bus_id: data.installed_bus_id,
+      installed_com_id: data.installed_com_id,
       installed_access_key: "ACCESS_" + Date.now(),
     };
 
@@ -61,7 +60,7 @@ export default class DeviceService {
 
     return await this.deviceRepo.createInstalledDeviceWithCameras(
       deviceData,
-      camerasGroupData
+      camerasGroupData,
     );
   }
 
