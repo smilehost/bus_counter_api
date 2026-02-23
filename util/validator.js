@@ -8,10 +8,10 @@ const cameraGroupInputSchema = z.object({
 });
 
 export const createInstalledDeviceSchema = z.object({
-  device_name: z.string().min(1),
-  device_uid: z.string().min(1),
-  bus_id: z.number().int().positive(),
-  com_id: z.number().int().positive(),
+  installed_device_name: z.string().min(1),
+  installed_device_uid: z.string().min(1),
+  installed_bus_id: z.number().int().positive(),
+  installed_com_id: z.number().int().positive(),
   cameras_group: z.array(cameraGroupInputSchema).optional(),
 });
 
@@ -96,4 +96,10 @@ export const piCounterDataSchema = z.object({
   lat: z.string(),
   lng: z.string(),
   faces: z.array(faceInputSchema).optional(),
+});
+
+export const verifyTokenSchema = z.object({
+  code: z.string().min(1),
+  service: z.string().min(1),
+  session_id: z.string().min(1),
 });

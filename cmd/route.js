@@ -5,6 +5,7 @@ import AuthHandler from "../domain/auth/auth.handler.js";
 import CounterHandler from "../domain/counter/counter.handler.js";
 import CameraHandler from "../domain/camera/camera.handler.js";
 import DeviceHandler from "../domain/device/device.handler.js";
+import FaceHandler from "../domain/face/face.handler.js";
 
 const setupRoutes = () => {
   const router = express.Router();
@@ -16,6 +17,7 @@ const setupRoutes = () => {
   const counterApi = makeInvoker(CounterHandler);
   const cameraApi = makeInvoker(CameraHandler);
   const deviceApi = makeInvoker(DeviceHandler);
+  const faceApi = makeInvoker(FaceHandler);
 
   // Public Routes (No Auth)
   const publicRouter = express.Router();
@@ -40,24 +42,33 @@ const setupRoutes = () => {
   userRouter.get("/camera-group/:id", cameraApi("getCameraGroup"));
   userRouter.get(
     "/camera-groups/device/:deviceId",
-    cameraApi("getCameraGroupsByDevice")
+    cameraApi("getCameraGroupsByDevice"),
   );
   userRouter.post("/camera-group", cameraApi("createCameraGroup"));
   userRouter.put("/camera-group/:id", cameraApi("updateCameraGroup"));
 
   userRouter.get("/counter/:id", counterApi("getCounter"));
 
+  // Face routes
+  userRouter.get("/face/:id", faceApi("getFace"));
+  userRouter.get("/faces/counter/:counterId", faceApi("getFacesByCounter"));
+  userRouter.get("/faces/gender/:gender", faceApi("getFacesByGender"));
+  userRouter.delete("/face/:id", faceApi("deleteFace"));
+
   // Admin Routes (Admin Only)
   const adminRouter = express.Router();
   adminRouter.use(authMiddleware.authenticate.bind(authMiddleware));
-  adminRouter.use(authMiddleware.canAccessRole([1]));
+  adminRouter.use(authMiddleware.canAccessRole([1, 2]));
 
   adminRouter.get("/counters", counterApi("getAllCounters"));
   adminRouter.get(
     "/counters/by-date-range",
-    counterApi("getCountersByDateRange")
+    counterApi("getCountersByDateRange"),
   );
   adminRouter.get("/counters/by-date", counterApi("getCountersByDate"));
+
+  adminRouter.get("/faces", faceApi("getAllFaces"));
+  adminRouter.get("/faces/by-date-range", faceApi("getFacesByDateRange"));
 
   router.use(publicRouter);
   router.use(userRouter);
