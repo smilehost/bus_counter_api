@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx nodemon cmd/main.js",
+    "dev:pnpm": "pnpm dlx nodemon cmd/main.js",
     "debug": "node --inspect-brk cmd/main.js",
     "debug:nodemon": "npx nodemon --inspect-brk cmd/main.js",
     "db:push": "npx prisma db push",
