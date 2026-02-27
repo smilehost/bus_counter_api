@@ -36,6 +36,7 @@ export default class AuthHandler {
           account_id,
           account_username,
           com_id,
+          com_name,
           account_role,
           account_name,
           session_id: authSessionId,
@@ -57,8 +58,11 @@ export default class AuthHandler {
           ResponseFormatter.success({
             access_token,
             refresh_token,
+            account_username,
             account_name,
+            com_name,
             com_id,
+            account_role,
           }),
         );
       } else {

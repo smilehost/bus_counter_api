@@ -21,11 +21,7 @@ export default class CounterHandler {
           ),
         );
     } catch (err) {
-      if (err.name === "ZodError") {
-        return res
-          .status(400)
-          .json(ResponseFormatter.error("Validation failed", err.errors));
-      }
+      // console.error("Error in receiveFromPi:", err);
       AppError.handleError(res, err);
     }
   }
