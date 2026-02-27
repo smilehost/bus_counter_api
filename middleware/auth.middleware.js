@@ -9,13 +9,13 @@ class AuthMiddleware {
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return AppError.handleError(
         res,
-        AppError.Unauthorized("Authorization header missing or malformed.")
+        AppError.Unauthorized("Authorization header missing or malformed."),
       );
     }
     const token = authHeader.split(" ")[1];
     try {
       const decoded = verifyToken(token);
-      console.log("Authenticated user:", decoded);
+      // console.log("Authenticated user:", decoded);
       req.user = decoded;
       if (req.container) {
         req.container.register({
@@ -26,21 +26,21 @@ class AuthMiddleware {
     } catch (err) {
       return AppError.handleError(
         res,
-        AppError.Unauthorized("Invalid or expired token.")
+        AppError.Unauthorized("Invalid or expired token."),
       );
     }
   }
   canAccessRole(allowedRoles) {
     return (req, res, next) => {
       const userRole = req.user?.account_role;
-      console.log("User role:", userRole);
+      // console.log("User role:", userRole);
       const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
       if (!roles.includes(userRole)) {
         return AppError.handleError(
           res,
           AppError.Forbidden(
-            "You do not have permission to access this resource."
-          )
+            "You do not have permission to access this resource.",
+          ),
         );
       }
       next();
