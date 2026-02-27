@@ -27,7 +27,7 @@ function getRandomKhonKaenLocation() {
 function getRandomDate(daysAgo = 30) {
   const now = new Date();
   const pastDate = new Date(
-    now.getTime() - Math.random() * daysAgo * 24 * 60 * 60 * 1000
+    now.getTime() - Math.random() * daysAgo * 24 * 60 * 60 * 1000,
   );
   return pastDate;
 }
@@ -51,7 +51,7 @@ async function main() {
       const location = getRandomKhonKaenLocation();
       const doorOpenTime = getRandomDate();
       const doorCloseTime = new Date(
-        doorOpenTime.getTime() + Math.random() * 5 * 60 * 1000
+        doorOpenTime.getTime() + Math.random() * 5 * 60 * 1000,
       ); // 0-5 minutes later
       return {
         counter_in_count: Math.floor(Math.random() * 50) + 1,
@@ -97,7 +97,7 @@ async function main() {
       camera_group_camera_top_uid: `CAM_TOP_${String(i + 1).padStart(5, "0")}`,
       camera_group_camera_face_uid: `CAM_FACE_${String(i + 1).padStart(
         5,
-        "0"
+        "0",
       )}`,
     })),
   });
